@@ -1,9 +1,13 @@
 ###Trabalho - Computação Gráfica
+---
+
 Integrantes: 
 - [@eiguike](https://github.com/eiguike)
 - [@marcelloacar](https://github.com/marcelloacar)
 - [@rfzanetti](https://github.com/rfzanetti)
 - [@streeck](https://github.com/streeck)
+
+---
 
 **Tema**: Jogo ou animação interativa
 
@@ -13,6 +17,8 @@ Integrantes:
 
 **Ferramentas**: OpenGL e GLSL (obrigatórios), livre para usar qualquer biblioteca auxiliar, linguagens: C/C++/Java/JavaScript/HTML5, IDE: apenas livres (não utilizar bibliotecas/ide/compiladores disponíveis apenas no windows)
 
+---
+
 #####Parte 1: Definição do trabalho e dos objetos (submeter com antecedência PDF descrevendo a proposta e aguardar aprovação)
 
 Definição da proposta:
@@ -21,9 +27,10 @@ Definição da proposta:
 - Interações pretendidas (teclado e mouse)
 - Utilizar pelo menos um modelos de cada representado por superfícies curvas.
 
-
 #####Parte 2: Implementação
 Incluir efeitos:
 - Realísticos (luz e textura, por exemplo) ;
 - Interação entre objetos (colisão);
 - Interação com o usuário.
+
+---
