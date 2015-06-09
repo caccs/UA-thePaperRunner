@@ -1,17 +1,77 @@
-<! DOCTYPE html>
-<html>
-	<head>
-		<title>Trabalho CG - UFSCar Sorocaba</title>
-	</head>
-	<body>
-     <ul>
-       <li>Charles David</li>
-       <li>Henrique Teruo Eihara</li>
-       <li>Marcello da Costa Marques Acar</li>
-       <li>Rafael Ferraz Zanetti</li>
-     </ul>
-		 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et justo eleifend, facilisis risus at, scelerisque nibh. Aenean id purus cursus, condimentum felis quis, pharetra sapien. Duis eleifend euismod sapien eu euismod. Duis iaculis gravida pretium. Ut dapibus rutrum ante, sed dictum elit sollicitudin eget. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas id sollicitudin massa. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus malesuada leo sed arcu venenatis vulputate. Vivamus eget mauris hendrerit leo volutpat volutpat quis ut velit. Mauris auctor augue eu ante mollis aliquet. Nunc sagittis vel dui ac iaculis. Maecenas in rutrum nisi, sit amet dapibus dui. Duis eu ex sed ex gravida semper sit amet eleifend odio.
+<!DOCTYPE html>
 
-		Aenean iaculis, arcu eget cursus suscipit, arcu neque molestie lorem, eget sagittis dolor ligula et lacus. Morbi cursus, neque nec ornare tincidunt, quam turpis porta dolor, sit amet mollis ligula eros quis elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget libero eu tellus tempus iaculis ac in magna. Cras ultrices orci vehicula nibh auctor pulvinar. Maecenas ut massa ante. Quisque aliquam velit ante, ut egestas tellus dictum sit amet. Nulla molestie blandit fermentum. Donec id scelerisque ex. Nam sagittis mi felis, eu consectetur libero pharetra porttitor. Suspendisse vitae aliquet nisi. Mauris vel magna ut magna ornare bibendum nec non enim. Phasellus at lorem et nisi finibus ornare vitae ut sem. Quisque sollicitudin metus felis, at accumsan massa ornare et. Phasellus pellentesque odio augue, ornare luctus elit sagittis tristique. Donec velit ante, fringilla vitae justo ac, aliquam commodo mauris. 
-	</body>
+<html> 
+	<head> 
+		<title>My first Three.js app</title> 
+		<style> 
+			body { margin: 0; } 
+			canvas { width: 100%; height: 100% } 
+		</style> 
+	</head> 
+	<body> 
+		<header>
+			<h1>Integrantes do Trabalho:</h1>
+			<ul>
+				<li>Henrique Teruo Eihara</li>
+				<li>Charles David</li>
+				<li>Marcello Acar</li>
+				<li>Rafael Zanetti</li>
+			</ul>
+
+
+		</header>
+		<script src="./js/three.min.js">
+		
+
+		</script> 
+		<script> 
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+			// PerspectiveCamera(FOV, ratio, )
+
+			// cria o canvas para exibir renderizado
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth/2, window.innerHeight/2);
+
+			// joga o renderer (canvas) no html
+			document.body.appendChild(renderer.domElement);
+
+			var geometry = new THREE.BoxGeometry(1,1,1);
+			var material = new THREE.MeshBasicMaterial({color:0x00ff00});
+			var cube = new THREE.Mesh(geometry, material);
+			scene.add(cube);
+
+			camera.position.z = 5;
+
+			// Listener para pegar as ações do teclado
+			document.addEventListener('keydown', function (evt) {
+			  if (evt.keyCode === 87) {
+			  	cube.rotation.x-=0.1;
+			  }
+			  if (evt.keyCode === 83) {
+			  	cube.rotation.x+=0.1;
+			  }
+			  if (evt.keyCode === 65) {
+			  	cube.rotation.y-=0.1;
+			  }
+  			  if (evt.keyCode === 68) {
+			  	cube.rotation.y+=0.1;
+			  }
+			});			
+
+			var render = function(){
+				requestAnimationFrame(render);
+
+				//cube.rotation.x +=0.1;
+				//cube.rotation.y +=0.1;
+				//cube.rotation.z +=0.1;
+
+				renderer.render(scene, camera);
+			};
+
+
+			render();
+		</script> 
+	</body> 
 </html>
