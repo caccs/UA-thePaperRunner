@@ -46,17 +46,21 @@
 
 			// Listener para pegar as ações do teclado
 			document.addEventListener('keydown', function (evt) {
+			  //W
 			  if (evt.keyCode === 87) {
-			  	cube.rotation.x-=0.1;
+			  	cube.position.y+=0.1;
 			  }
+			  //S
 			  if (evt.keyCode === 83) {
-			  	cube.rotation.x+=0.1;
+			  	cube.position.y-=0.1;
 			  }
+			  //A
 			  if (evt.keyCode === 65) {
-			  	cube.rotation.y-=0.1;
+			  	cube.position.x-=0.1;
 			  }
+			  //D
   			  if (evt.keyCode === 68) {
-			  	cube.rotation.y+=0.1;
+			  	cube.position.x+=0.1;
 			  }
 			});			
 
@@ -68,8 +72,8 @@
 				//cube.rotation.z +=0.1;
 
 				renderer.render(scene, camera);
-			};
-
+			}
+;
 
 			render();
 		</script> 
