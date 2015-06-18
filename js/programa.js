@@ -55,18 +55,18 @@ function init(){
       camera.position.z-=0.09;
     }
     //S
-    if (evt.keyCode === 83) {
+    if (evt.keyCode === 83 || evt.keyCode === 40) {
       sprite.position.z+=0.1;
       camera.position.z+=0.09;
     }
     //A
-    if (evt.keyCode === 65) {
+    if (evt.keyCode === 65 || evt.keyCode === 37) {
       sprite.position.x-=0.1;
       camera.position.x-=0.1;
       sprite2.position.x-=0.079;
     }
     //D
-    if (evt.keyCode === 68) {
+    if (evt.keyCode === 68 || evt.keyCode === 39) {
       sprite.position.x+=0.1;
       camera.position.x+=0.1;
       sprite2.position.x+=0.079;
