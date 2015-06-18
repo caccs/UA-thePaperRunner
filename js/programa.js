@@ -23,12 +23,12 @@
     document.body.appendChild(renderer.domElement);
 
       // adicionando o personagem
-      var personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/sprite1.png');
-      animation = new TileTextureAnimator(personagemTextura, 8, 8, 100);
+      var personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+      animation = new TileTextureAnimator(personagemTextura, 1,3, 750);
       var personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
       var sprite = new THREE.Sprite(personagemSprite);
-      sprite.position.set(0,1.5,0);
-      sprite.scale.set(4,4,1);
+      sprite.position.set(0,1.6,4);
+      sprite.scale.set(2, 4,1);
       scene.add(sprite);
 
   // adicionando o chão
