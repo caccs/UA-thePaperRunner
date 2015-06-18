@@ -3,11 +3,27 @@
   var animation;
   var clock = new THREE.Clock();
 
+  // localização do ponteiro do mouse
+  mouse = {
+    x: 0,
+    y: 0
+  }
+
   // inicializa os objetos
   init();
 
   // loop de animação
   animate();
+
+  function addCubo(x,y,z) {
+    var geometry = new THREE.CubeGeometry(5, 5, 1);
+    var material = new THREE.MeshBasicMaterial({
+      map: new THREE.ImageUtils.loadTexture('img/caixa.png')
+    });
+    var cube = new THREE.Mesh(geometry, material);
+    cube.position.set(x, y, z);
+    scene.add(cube);
+  }
 
   function init() {
     scene = new THREE.Scene();
@@ -22,16 +38,18 @@
     // objetosjga o renderer (canvas) no html
     document.body.appendChild(renderer.domElement);
 
+    addCubo(5,2,4);
     // adicionando o personagem
-
     function addPersonagem() {
       var personagemTextura, personagemSprite, sprite;
+      // variaveis necessárias para quando for necessário
+      // renderizar o personagem, ele terá estará na mesma
+      // localização anterior.
       var posx, posy, posz;
       var flagR = true,
         flagL = true,
-        flagS;
 
-      personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+        personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
       animation = new TileTextureAnimator(personagemTextura, 1, 3, 750);
       personagemSprite = new THREE.SpriteMaterial({
         map: personagemTextura,
@@ -50,21 +68,23 @@
       // Listener para pegar as ações do teclado
 
       document.addEventListener('keyup', function(evt) {
-        scene.remove(sprite);
-        personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
-        animation = new TileTextureAnimator(personagemTextura, 1, 3, 600);
-        personagemSprite = new THREE.SpriteMaterial({
-          map: personagemTextura,
-          useScreenCoordinates: false,
-          fog: true,
-          color: 0xffffff
-        });
-        sprite = new THREE.Sprite(personagemSprite);
-        sprite.position.set(posx, 1.6, 4);
-        sprite.scale.set(2, 4, 1);
-        scene.add(sprite);
-        flagL = true;
-        flagR = true;
+        if (evt.keyCode === 65 || evt.keyCode === 68) {
+          scene.remove(sprite);
+          personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+          animation = new TileTextureAnimator(personagemTextura, 1, 3, 600);
+          personagemSprite = new THREE.SpriteMaterial({
+            map: personagemTextura,
+            useScreenCoordinates: false,
+            fog: true,
+            color: 0xffffff
+          });
+          sprite = new THREE.Sprite(personagemSprite);
+          sprite.position.set(posx, 1.6, 4);
+          sprite.scale.set(2, 4, 1);
+          scene.add(sprite);
+          flagL = true;
+          flagR = true;
+        }
       });
       document.addEventListener('keydown', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 37) {
@@ -114,8 +134,6 @@
           }
         }
       });
-
-
     }
 
     addPersonagem();
@@ -200,4 +218,14 @@
         texture.offset.y = iRow / this.vTiles;
       }
     };
+  }
+
+  function onDocumentMouseMove(event) {
+    // the following line would stop any other event handler from firing
+    // (such as the mouse's TrackballControls)
+    // event.preventDefault();
+
+    // update the mouse variable
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
