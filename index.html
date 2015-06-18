@@ -42,17 +42,24 @@
 			var cube = new THREE.Mesh(geometry, material);
 			scene.add(cube);
 
-			camera.position.z = 9;
+      camera.position.set(1,2,7);
 
-	var floorTexture = new THREE.ImageUtils.loadTexture( 'img/background/checkerboard.jpg' );
-	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-	floorTexture.repeat.set( 10, 10 );
-	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-	floor.position.y = -0.5;
-	floor.rotation.x = Math.PI / 2;
-	scene.add(floor);
+      var floorTexture = new THREE.ImageUtils.loadTexture( 'img/background/checkerboard.jpg' );
+      floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+      floorTexture.repeat.set( 10, 10 );
+      var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+      var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      floor.position.y = -0.5;
+      floor.rotation.x = Math.PI / 2;
+      scene.add(floor);
+
+      var background = new THREE.ImageUtils.loadTexture( 'img/background/background.bmp');
+      var crateMaterial = new THREE.SpriteMaterial( { map: background, useScreenCoordinates: false, color: 0xffffff } );
+      var sprite2 = new THREE.Sprite( crateMaterial);
+      sprite2.position.set( 0,3, 0 );
+      sprite2.scale.set( 20, 10, 1 ); // imageWidth, imageHeight
+      scene.add( sprite2 );
 
 
 			// Listener para pegar as ações do teclado
@@ -60,22 +67,26 @@
 			  //W
 			  if (evt.keyCode === 87) {
 			  	cube.position.y+=0.1;
+			  	camera.position.y+=0.2;
 			  }
 			  //S
 			  if (evt.keyCode === 83) {
 			  	cube.position.y-=0.1;
+			  	camera.position.y-=0.2;
 			  }
 			  //A
 			  if (evt.keyCode === 65) {
 			  	cube.position.x-=0.1;
-			  	camera.position.x-=0.2;
+			  	camera.position.x-=0.1;
+          sprite2.position.x-=0.079;
 			  }
 			  //D
   			  if (evt.keyCode === 68) {
 			  	cube.position.x+=0.1;
-			  	camera.position.x+=0.2;
+			  	camera.position.x+=0.1;
+          sprite2.position.x+=0.079;
 			  }
-			});			
+			});
 
 			var render = function(){
 				requestAnimationFrame(render);
