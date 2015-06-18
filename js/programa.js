@@ -50,7 +50,7 @@ function init(){
   // Listener para pegar as ações do teclado
   document.addEventListener('keydown', function (evt) {
     //W
-    if (evt.keyCode === 87 || evt.keyCode === 5) {
+    if (evt.keyCode === 87) {
       sprite.position.z-=0.1;
       camera.position.z-=0.09;
     }
