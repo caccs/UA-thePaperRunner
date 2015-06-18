@@ -51,6 +51,7 @@ function init(){
   document.addEventListener('keydown', function (evt) {
     //W
     if (evt.keyCode === 87 || evt.keyCode === 5) {
+      sprite.position.z-=0.1;
       camera.position.z-=0.09;
     }
     //S
