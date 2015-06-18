@@ -19,28 +19,93 @@
 
     // define posição da camera (x,y,z) e aonde ela est apontando
     camera.position.set(1,2,20);
-    // ojga o renderer (canvas) no html
+    // objetosjga o renderer (canvas) no html
     document.body.appendChild(renderer.domElement);
 
       // adicionando o personagem
-      var personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+
+      function addPersonagem(){
+      var personagemTextura, personagemSprite, sprite;
+      var posx,posy,posz;
+      var flagR = true, flagL = true, flagS;
+
+      personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
       animation = new TileTextureAnimator(personagemTextura, 1,3, 750);
-      var personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
-      var sprite = new THREE.Sprite(personagemSprite);
+      personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+      sprite = new THREE.Sprite(personagemSprite);
       sprite.position.set(0,1.6,4);
+      posx = 0; posy = 1.6; posz = 4;
       sprite.scale.set(2, 4,1);
       scene.add(sprite);
 
-  // adicionando o chão
-  var floorTexture = new THREE.ImageUtils.loadTexture( 'img/background/checkerboard.jpg' );
-  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-  floorTexture.repeat.set( 100, 100 );
-  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-  var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  floor.position.y = -0.5;
-  floor.rotation.x = Math.PI / 2;
-  scene.add(floor);
+    // Listener para pegar as ações do teclado
+      document.addEventListener('keydown', function (evt) {
+        if (evt.keyCode === 65 || evt.keyCode === 37) {
+          sprite.position.x-=0.1;
+          posx -=0.1;
+          camera.position.x-=0.1;
+          sprite2.position.x-=0.079;
+          flagL = true;
+          if(flagR === true){
+            scene.remove(sprite);
+            personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running.png');
+            animation = new TileTextureAnimator(personagemTextura, 3,1, 300);
+            personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            sprite = new THREE.Sprite(personagemSprite);
+            sprite.position.set(posx,1.6,4);
+            sprite.scale.set(2, 4,1);
+            scene.add(sprite);
+            flagR = false;
+          }         
+        }else if (evt.keyCode === 68 || evt.keyCode === 39) {
+          sprite.position.x+=0.1;
+          camera.position.x+=0.1;
+          sprite2.position.x+=0.079;
+          posx+=0.1;
+          flagR = true;
+
+          if(flagL === true){
+            scene.remove(sprite);
+            personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running1.png');
+            animation = new TileTextureAnimator(personagemTextura, 3,1, 300);
+              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            sprite = new THREE.Sprite(personagemSprite);
+            sprite.position.set(posx,1.6,4);
+            sprite.scale.set(2, 4,1);
+            scene.add(sprite);
+            flagL = false;
+          }
+        }
+        if((evt.keyCode != 68)&&(evt.keyCode != 65)){
+             scene.remove(sprite);
+            personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+            animation = new TileTextureAnimator(personagemTextura, 1,3, 600);
+              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            sprite = new THREE.Sprite(personagemSprite);
+            sprite.position.set(posx,1.6,4);
+            sprite.scale.set(2, 4,1);
+            scene.add(sprite);
+            flagL = true;
+            flagR = true;
+        }
+
+      });
+
+
+    }
+
+    addPersonagem();
+
+      // adicionando o chão
+      var floorTexture = new THREE.ImageUtils.loadTexture( 'img/background/checkerboard.jpg' );
+      floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+      floorTexture.repeat.set( 100, 100 );
+      var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+      var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      floor.position.y = -0.5;
+      floor.rotation.x = Math.PI / 2;
+      scene.add(floor);
 
     // adicionando o fundo (de papel)
     var background = new THREE.ImageUtils.loadTexture( 'img/background/background.bmp');
@@ -50,32 +115,6 @@
     sprite2.scale.set( 20, 10, 1 ); // imageWidth, imageHeight
     scene.add( sprite2 );
 
-
-    // Listener para pegar as ações do teclado
-    document.addEventListener('keydown', function (evt) {
-      //W
-      if (evt.keyCode === 87 || evt.keyCode === 38) {
-        sprite.position.z-=0.1;
-        camera.position.z-=0.09;
-      }
-      //S
-      if (evt.keyCode === 83 || evt.keyCode === 40) {
-        sprite.position.z+=0.1;
-        camera.position.z+=0.09;
-      }
-      //A
-      if (evt.keyCode === 65 || evt.keyCode === 37) {
-        sprite.position.x-=0.1;
-        camera.position.x-=0.1;
-        sprite2.position.x-=0.079;
-      }
-      //D
-      if (evt.keyCode === 68 || evt.keyCode === 39) {
-        sprite.position.x+=0.1;
-        camera.position.x+=0.1;
-        sprite2.position.x+=0.079;
-      }
-    });
   }
 
   function animate(){
