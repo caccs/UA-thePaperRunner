@@ -39,6 +39,19 @@
       scene.add(sprite);
 
     // Listener para pegar as ações do teclado
+
+      document.addEventListener('keyup', function (evt) {
+       scene.remove(sprite);
+      personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+            animation = new TileTextureAnimator(personagemTextura, 1,3, 600);
+              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            sprite = new THREE.Sprite(personagemSprite);
+            sprite.position.set(posx,1.6,4);
+            sprite.scale.set(2, 4,1);
+            scene.add(sprite);
+            flagL = true;
+            flagR = true;
+      });
       document.addEventListener('keydown', function (evt) {
         if (evt.keyCode === 65 || evt.keyCode === 37) {
           sprite.position.x-=0.1;
@@ -76,19 +89,6 @@
             flagL = false;
           }
         }
-        if((evt.keyCode != 68)&&(evt.keyCode != 65)){
-             scene.remove(sprite);
-            personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
-            animation = new TileTextureAnimator(personagemTextura, 1,3, 600);
-              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
-            sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx,1.6,4);
-            sprite.scale.set(2, 4,1);
-            scene.add(sprite);
-            flagL = true;
-            flagR = true;
-        }
-
       });
 
 
