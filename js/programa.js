@@ -9,82 +9,106 @@
   // loop de animação
   animate();
 
-  function init(){
+  function init() {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 20000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
 
     // cria o canvas para exibir a cena renderizada
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     // define posição da camera (x,y,z) e aonde ela est apontando
-    camera.position.set(1,2,20);
+    camera.position.set(1, 2, 20);
     // objetosjga o renderer (canvas) no html
     document.body.appendChild(renderer.domElement);
 
-      // adicionando o personagem
+    // adicionando o personagem
 
-      function addPersonagem(){
+    function addPersonagem() {
       var personagemTextura, personagemSprite, sprite;
-      var posx,posy,posz;
-      var flagR = true, flagL = true, flagS;
+      var posx, posy, posz;
+      var flagR = true,
+        flagL = true,
+        flagS;
 
       personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
-      animation = new TileTextureAnimator(personagemTextura, 1,3, 750);
-      personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+      animation = new TileTextureAnimator(personagemTextura, 1, 3, 750);
+      personagemSprite = new THREE.SpriteMaterial({
+        map: personagemTextura,
+        useScreenCoordinates: false,
+        fog: true,
+        color: 0xffffff
+      });
       sprite = new THREE.Sprite(personagemSprite);
-      sprite.position.set(0,1.6,4);
-      posx = 0; posy = 1.6; posz = 4;
-      sprite.scale.set(2, 4,1);
+      sprite.position.set(0, 1.6, 4);
+      posx = 0;
+      posy = 1.6;
+      posz = 4;
+      sprite.scale.set(2, 4, 1);
       scene.add(sprite);
 
-    // Listener para pegar as ações do teclado
+      // Listener para pegar as ações do teclado
 
-      document.addEventListener('keyup', function (evt) {
-       scene.remove(sprite);
-      personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
-            animation = new TileTextureAnimator(personagemTextura, 1,3, 600);
-              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
-            sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx,1.6,4);
-            sprite.scale.set(2, 4,1);
-            scene.add(sprite);
-            flagL = true;
-            flagR = true;
+      document.addEventListener('keyup', function(evt) {
+        scene.remove(sprite);
+        personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+        animation = new TileTextureAnimator(personagemTextura, 1, 3, 600);
+        personagemSprite = new THREE.SpriteMaterial({
+          map: personagemTextura,
+          useScreenCoordinates: false,
+          fog: true,
+          color: 0xffffff
+        });
+        sprite = new THREE.Sprite(personagemSprite);
+        sprite.position.set(posx, 1.6, 4);
+        sprite.scale.set(2, 4, 1);
+        scene.add(sprite);
+        flagL = true;
+        flagR = true;
       });
-      document.addEventListener('keydown', function (evt) {
+      document.addEventListener('keydown', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 37) {
-          sprite.position.x-=0.1;
-          posx -=0.1;
-          camera.position.x-=0.1;
-          sprite2.position.x-=0.079;
+          sprite.position.x -= 0.1;
+          posx -= 0.1;
+          camera.position.x -= 0.1;
+          sprite2.position.x -= 0.079;
           flagL = true;
-          if(flagR === true){
+          if (flagR === true) {
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running.png');
-            animation = new TileTextureAnimator(personagemTextura, 3,1, 300);
-            personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
+            personagemSprite = new THREE.SpriteMaterial({
+              map: personagemTextura,
+              useScreenCoordinates: false,
+              fog: true,
+              color: 0xffffff
+            });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx,1.6,4);
-            sprite.scale.set(2, 4,1);
+            sprite.position.set(posx, 1.6, 4);
+            sprite.scale.set(2, 4, 1);
             scene.add(sprite);
             flagR = false;
-          }         
-        }else if (evt.keyCode === 68 || evt.keyCode === 39) {
-          sprite.position.x+=0.1;
-          camera.position.x+=0.1;
-          sprite2.position.x+=0.079;
-          posx+=0.1;
+          }
+        } else if (evt.keyCode === 68 || evt.keyCode === 39) {
+          sprite.position.x += 0.1;
+          camera.position.x += 0.1;
+          sprite2.position.x += 0.079;
+          posx += 0.1;
           flagR = true;
 
-          if(flagL === true){
+          if (flagL === true) {
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running1.png');
-            animation = new TileTextureAnimator(personagemTextura, 3,1, 300);
-              personagemSprite = new THREE.SpriteMaterial ({map: personagemTextura, useScreenCoordinates: false, fog: true, color: 0xffffff});
+            animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
+            personagemSprite = new THREE.SpriteMaterial({
+              map: personagemTextura,
+              useScreenCoordinates: false,
+              fog: true,
+              color: 0xffffff
+            });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx,1.6,4);
-            sprite.scale.set(2, 4,1);
+            sprite.position.set(posx, 1.6, 4);
+            sprite.scale.set(2, 4, 1);
             scene.add(sprite);
             flagL = false;
           }
@@ -96,43 +120,50 @@
 
     addPersonagem();
 
-      // adicionando o chão
-      var floorTexture = new THREE.ImageUtils.loadTexture( 'img/background/checkerboard.jpg' );
-      floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-      floorTexture.repeat.set( 100, 100 );
-      var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-      var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-      floor.position.y = -0.5;
-      floor.rotation.x = Math.PI / 2;
-      scene.add(floor);
+    // adicionando o chão
+    var floorTexture = new THREE.ImageUtils.loadTexture('img/background/checkerboard.jpg');
+    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(100, 100);
+    var floorMaterial = new THREE.MeshBasicMaterial({
+      map: floorTexture,
+      side: THREE.DoubleSide
+    });
+    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.position.y = -0.5;
+    floor.rotation.x = Math.PI / 2;
+    scene.add(floor);
 
     // adicionando o fundo (de papel)
-    var background = new THREE.ImageUtils.loadTexture( 'img/background/background.bmp');
-    var crateMaterial = new THREE.SpriteMaterial( { map: background, useScreenCoordinates: false, color: 0xffffff } );
-    var sprite2 = new THREE.Sprite( crateMaterial);
-    sprite2.position.set( 0,3, 0 );
-    sprite2.scale.set( 20, 10, 1 ); // imageWidth, imageHeight
-    scene.add( sprite2 );
+    var background = new THREE.ImageUtils.loadTexture('img/background/background.bmp');
+    var crateMaterial = new THREE.SpriteMaterial({
+      map: background,
+      useScreenCoordinates: false,
+      color: 0xffffff
+    });
+    var sprite2 = new THREE.Sprite(crateMaterial);
+    sprite2.position.set(0, 3, 0);
+    sprite2.scale.set(20, 10, 1); // imageWidth, imageHeight
+    scene.add(sprite2);
 
   }
 
-  function animate(){
+  function animate() {
     requestAnimationFrame(animate);
     render();
     update();
   }
 
-  function update()
-  {
-    var delta = clock.getDelta(); 
+  function update() {
+    var delta = clock.getDelta();
     animation.update(1000 * delta);
-    
+
   }
 
-  function render(){
-    renderer.render(scene,camera);
+  function render() {
+    renderer.render(scene, camera);
   }
+
   function TileTextureAnimator(texture, hTiles, vTiles, durationTile) {
 
     // current tile number
@@ -149,7 +180,7 @@
     this.vTiles = vTiles;
     this.cntTiles = this.hTiles * this.vTiles;
 
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping; 
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(1 / this.hTiles, 1 / this.vTiles);
 
     this.update = function(time) {
