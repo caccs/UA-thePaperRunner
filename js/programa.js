@@ -15,7 +15,20 @@
   // loop de animação
   animate();
 
-  function addCubo(x,y,z) {
+  function addVTK(arquivo,x) {
+    var material = new THREE.MeshLambertMaterial( { color:0xffffff, side: THREE.DoubleSide } );
+    var loader = new THREE.VTKLoader();
+    loader.load(arquivo, function(geometry) {
+
+      geometry.computeVertexNormals();
+
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(x,1,0);
+      scene.add(mesh);
+    });
+  }
+
+  function addCubo(x, y, z) {
     var geometry = new THREE.CubeGeometry(5, 5, 1);
     var material = new THREE.MeshBasicMaterial({
       map: new THREE.ImageUtils.loadTexture('img/caixa.png')
@@ -38,7 +51,7 @@
     // objetosjga o renderer (canvas) no html
     document.body.appendChild(renderer.domElement);
 
-    addCubo(5,2,4);
+    addCubo(5, 2, 4);
     // adicionando o personagem
     function addPersonagem() {
       var personagemTextura, personagemSprite, sprite;
