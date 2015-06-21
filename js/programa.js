@@ -3,6 +3,8 @@
   var animation;
   var clock = new THREE.Clock();
 
+  var monstros = [];
+
   // localização do ponteiro do mouse
   mouse = {
     x: 0,
@@ -15,18 +17,44 @@
   // loop de animação
   animate();
 
-  function addVTK(arquivo,x) {
-    var material = new THREE.MeshLambertMaterial( { color:0xffffff, side: THREE.DoubleSide } );
+  function addVTK(arquivo, x) {
+    var material = new THREE.MeshLambertMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide
+    });
     var loader = new THREE.VTKLoader();
     loader.load(arquivo, function(geometry) {
 
       geometry.computeVertexNormals();
 
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(x,1,0);
+      mesh.position.set(x, 1, 0);
       scene.add(mesh);
     });
   }
+
+  function adicionarMonstro(arquivo, x) {
+    var material = new THREE.MeshLambertMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide
+    });
+    var loader = new THREE.VTKLoader();
+    loader.load(arquivo, function(geometry) {
+
+      geometry.computeVertexNormals();
+
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(x, 1, 0);
+      mesh.scale.set(5, 5, 5);
+      scene.add(mesh);
+      monstros.push(mesh);
+    });
+
+    // adiciona no array do javascripts
+    // os monstros
+  }
+
+
 
   function addCubo(x, y, z) {
     var geometry = new THREE.CubeGeometry(5, 5, 1);
@@ -79,7 +107,25 @@
       scene.add(sprite);
 
       // Listener para pegar as ações do teclado
-
+      document.addEventListener('click', function(evt) {
+        scene.remove(sprite);
+        if (flagR === true) {
+          personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch.png');
+        } else if (flagL === true) {
+          personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch1.png');
+        }
+        animation = new TileTextureAnimator(personagemTextura, 3, 1, 200);
+        personagemSprite = new THREE.SpriteMaterial({
+          map: personagemTextura,
+          useScreenCoordinates: false,
+          fog: true,
+          color: 0xffffff
+        });
+        sprite = new THREE.Sprite(personagemSprite);
+        sprite.position.set(posx, 1.6, 4);
+        sprite.scale.set(2, 4, 1);
+        scene.add(sprite);
+      });
       document.addEventListener('keyup', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 68) {
           scene.remove(sprite);
@@ -95,8 +141,6 @@
           sprite.position.set(posx, 1.6, 4);
           sprite.scale.set(2, 4, 1);
           scene.add(sprite);
-          flagL = true;
-          flagR = true;
         }
       });
       document.addEventListener('keydown', function(evt) {
@@ -181,8 +225,18 @@
 
   function animate() {
     requestAnimationFrame(animate);
+    //autlaizar movimentos do monstros
+    atualizarMonstros();
     render();
     update();
+  }
+
+  function atualizarMonstros() {
+    if (monstros.length > 0) {
+      monstros.forEach(function(monstro) {
+        monstro.position.x -= 0.01;
+      });
+    }
   }
 
   function update() {
