@@ -88,9 +88,10 @@
       // localização anterior.
       var posx, posy, posz;
       var flagR = true,
-        flagL = true,
+          flagL = true,
+          flagSoco = true;
 
-        personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
+      personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
       animation = new TileTextureAnimator(personagemTextura, 1, 3, 750);
       personagemSprite = new THREE.SpriteMaterial({
         map: personagemTextura,
@@ -109,9 +110,9 @@
       // Listener para pegar as ações do teclado
       document.addEventListener('click', function(evt) {
         scene.remove(sprite);
-        if (flagR === true) {
+        if (flagSoco === true) {
           personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch.png');
-        } else if (flagL === true) {
+        } else if (flagSoco === false) {
           personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch1.png');
         }
         animation = new TileTextureAnimator(personagemTextura, 3, 1, 200);
@@ -141,9 +142,12 @@
           sprite.position.set(posx, 1.6, 4);
           sprite.scale.set(2, 4, 1);
           scene.add(sprite);
+          flagL = true;
+          flagR = true;
         }
       });
       document.addEventListener('keydown', function(evt) {
+        // d
         if (evt.keyCode === 65 || evt.keyCode === 37) {
           sprite.position.x -= 0.1;
           posx -= 0.1;
@@ -166,6 +170,8 @@
             scene.add(sprite);
             flagR = false;
           }
+          flagSoco = false;
+          // a
         } else if (evt.keyCode === 68 || evt.keyCode === 39) {
           sprite.position.x += 0.1;
           camera.position.x += 0.1;
@@ -189,6 +195,7 @@
             scene.add(sprite);
             flagL = false;
           }
+          flagSoco = true;
         }
       });
     }
