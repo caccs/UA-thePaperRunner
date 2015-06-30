@@ -11,6 +11,10 @@
     y: 0
   }
 
+  // prebufferiza imagens e modelos
+  function preBuffer(){
+    
+  }
   // inicializa os objetos
   init();
 
@@ -80,6 +84,23 @@
     document.body.appendChild(renderer.domElement);
 
     addCubo(5, 2, 4);
+
+    function addGrama(){
+      grama = new THREE.ImageUtils.loadTexture('img/grama.png');
+      animation = new TileTextureAnimator(grama,3,1,200);
+      gramaSprite = new THREE.SpriteMaterial({
+        map: grama, useScreenCoordinates: false,
+        fog: true, color: 0xffffff
+      });
+
+      sprite = new THREE.Sprite(gramaSprite);
+      sprite.position.set(0,1.6,4);
+      sprite.scale.set(1,1,1);
+      scene.add(sprite);
+
+    }
+
+    addGrama();
     // adicionando o personagem
     function addPersonagem() {
       var personagemTextura, personagemSprite, sprite;
@@ -203,14 +224,14 @@
     addPersonagem();
 
     // adicionando o chão
-    var floorTexture = new THREE.ImageUtils.loadTexture('img/background/checkerboard.jpg');
+    var floorTexture = new THREE.ImageUtils.loadTexture('img/chao.png');
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(100, 100);
+    floorTexture.repeat.set(1, 1);
     var floorMaterial = new THREE.MeshBasicMaterial({
       map: floorTexture,
       side: THREE.DoubleSide
     });
-    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    var floorGeometry = new THREE.PlaneGeometry(100,50, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.position.y = -0.5;
     floor.rotation.x = Math.PI / 2;
