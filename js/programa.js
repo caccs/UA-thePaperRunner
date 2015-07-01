@@ -3,7 +3,17 @@
   var animation;
   var clock = new THREE.Clock();
 
+  // variaveis do personagem
+  var personagemPrincipalSprite;
+
   var monstros = [];
+
+  var velocity = {
+    x: 0,
+    y: 0
+  }
+
+  var isJump = true;
 
   // localização do ponteiro do mouse
   mouse = {
@@ -57,9 +67,6 @@
     // adiciona no array do javascripts
     // os monstros
   }
-
-
-
   function addCubo(x, y, z) {
     var geometry = new THREE.CubeGeometry(5, 5, 1);
     var material = new THREE.MeshBasicMaterial({
@@ -100,7 +107,6 @@
 
     }
 
-    addGrama();
     // adicionando o personagem
     function addPersonagem() {
       var personagemTextura, personagemSprite, sprite;
@@ -127,6 +133,7 @@
       posz = 4;
       sprite.scale.set(2, 4, 1);
       scene.add(sprite);
+      personagemPrincipalSprite = sprite;
 
       // Listener para pegar as ações do teclado
       document.addEventListener('click', function(evt) {
@@ -147,6 +154,7 @@
         sprite.position.set(posx, 1.6, 4);
         sprite.scale.set(2, 4, 1);
         scene.add(sprite);
+        personagemPrincipalSprite = sprite;
       });
       document.addEventListener('keyup', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 68) {
@@ -163,11 +171,20 @@
           sprite.position.set(posx, 1.6, 4);
           sprite.scale.set(2, 4, 1);
           scene.add(sprite);
+          personagemPrincipalSprite = sprite;
           flagL = true;
           flagR = true;
         }
       });
       document.addEventListener('keydown', function(evt) {
+        // pulo
+        if(evt.keyCode === 87){
+          if(isJump){
+            velocity.y +=5;
+            isJump = false;
+          }
+        }
+
         // d
         if (evt.keyCode === 65 || evt.keyCode === 37) {
           sprite.position.x -= 0.1;
@@ -176,6 +193,7 @@
           sprite2.position.x -= 0.079;
           flagL = true;
           if (flagR === true) {
+            aux = sprite.position.y;
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running.png');
             animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
@@ -186,9 +204,11 @@
               color: 0xffffff
             });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx, 1.6, 4);
+            sprite.position.set(posx, aux, 4);
             sprite.scale.set(2, 4, 1);
             scene.add(sprite);
+            personagemPrincipalSprite = sprite;
+
             flagR = false;
           }
           flagSoco = false;
@@ -201,6 +221,7 @@
           flagR = true;
 
           if (flagL === true) {
+            aux = sprite.position.y;
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running1.png');
             animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
@@ -211,9 +232,10 @@
               color: 0xffffff
             });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx, 1.6, 4);
+            sprite.position.set(posx, aux, 4);
             sprite.scale.set(2, 4, 1);
             scene.add(sprite);
+            personagemPrincipalSprite= sprite;
             flagL = false;
           }
           flagSoco = true;
@@ -270,7 +292,15 @@
   function update() {
     var delta = clock.getDelta();
     animation.update(1000 * delta);
+    velocity.y -= 5 * delta;
 
+    console.log(personagemPrincipalSprite.position.y);
+    if( personagemPrincipalSprite.position.y <= 1.6 ){
+      velocity.y = Math.max(0,velocity.y);
+      isJump = true;  
+    }
+
+    personagemPrincipalSprite.translateY(velocity.y * delta);
   }
 
   function render() {
