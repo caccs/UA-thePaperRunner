@@ -144,26 +144,26 @@
       personagemPrincipalSprite = sprite;
 
       // Listener para pegar as ações do teclado
-      document.addEventListener('click', function(evt) {
-        scene.remove(sprite);
-        if (flagSoco === true) {
-          personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch.png');
-        } else if (flagSoco === false) {
-          personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch1.png');
-        }
-        animation = new TileTextureAnimator(personagemTextura, 3, 1, 200);
-        personagemSprite = new THREE.SpriteMaterial({
-          map: personagemTextura,
-          useScreenCoordinates: false,
-          fog: true,
-          color: 0xffffff
-        });
-        sprite = new THREE.Sprite(personagemSprite);
-        sprite.position.set(posx, 1.6, 4);
-        sprite.scale.set(2, 4, 1);
-        scene.add(sprite);
-        personagemPrincipalSprite = sprite;
-      });
+      // document.addEventListener('click', function(evt) {
+      //   scene.remove(sprite);
+      //   if (flagSoco === true) {
+      //     personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch.png');
+      //   } else if (flagSoco === false) {
+      //     personagemTextura = new THREE.ImageUtils.loadTexture('img/running/punch1.png');
+      //   }
+      //   animation = new TileTextureAnimator(personagemTextura, 3, 1, 200);
+      //   personagemSprite = new THREE.SpriteMaterial({
+      //     map: personagemTextura,
+      //     useScreenCoordinates: false,
+      //     fog: true,
+      //     color: 0xffffff
+      //   });
+      //   sprite = new THREE.Sprite(personagemSprite);
+      //   sprite.position.set(posx, 1.6, 4);
+      //   sprite.scale.set(2, 4, 1);
+      //   scene.add(sprite);
+      //   personagemPrincipalSprite = sprite;
+      // });
       document.addEventListener('keyup', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 68) {
           auxx = sprite.position.x;
