@@ -5,6 +5,10 @@
 
   // variaveis do personagem
   var personagemPrincipalSprite;
+  var esquerda, direita;
+
+
+  var cenarioBackground;
 
   var monstros = [];
 
@@ -158,6 +162,8 @@
       });
       document.addEventListener('keyup', function(evt) {
         if (evt.keyCode === 65 || evt.keyCode === 68) {
+          auxx = sprite.position.x;
+          auxy = sprite.position.y;
           scene.remove(sprite);
           personagemTextura = new THREE.ImageUtils.loadTexture('img/stand/stand.png');
           animation = new TileTextureAnimator(personagemTextura, 1, 3, 600);
@@ -168,12 +174,18 @@
             color: 0xffffff
           });
           sprite = new THREE.Sprite(personagemSprite);
-          sprite.position.set(posx, 1.6, 4);
+          sprite.position.set(auxx, auxy, 4);
           sprite.scale.set(2, 4, 1);
           scene.add(sprite);
           personagemPrincipalSprite = sprite;
           flagL = true;
           flagR = true;
+        }
+        if(evt.keyCode === 65){
+          esquerda = false;
+        }
+        if(evt.keyCode === 68){
+          direita = false;
         }
       });
       document.addEventListener('keydown', function(evt) {
@@ -187,13 +199,17 @@
 
         // d
         if (evt.keyCode === 65 || evt.keyCode === 37) {
-          sprite.position.x -= 0.1;
-          posx -= 0.1;
-          camera.position.x -= 0.1;
-          sprite2.position.x -= 0.079;
+          esquerda = true;
+
+          //sprite.position.x -= 0.1;
+          //posx -= 0.1;
+          //camera.position.x -= 0.1;
+          //sprite2.position.x -= 0.079;
+
           flagL = true;
           if (flagR === true) {
-            aux = sprite.position.y;
+            auxx = sprite.position.x;
+            auxy = sprite.position.y;
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running.png');
             animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
@@ -204,7 +220,7 @@
               color: 0xffffff
             });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx, aux, 4);
+            sprite.position.set(auxx, auxy, 4);
             sprite.scale.set(2, 4, 1);
             scene.add(sprite);
             personagemPrincipalSprite = sprite;
@@ -214,14 +230,18 @@
           flagSoco = false;
           // a
         } else if (evt.keyCode === 68 || evt.keyCode === 39) {
-          sprite.position.x += 0.1;
-          camera.position.x += 0.1;
-          sprite2.position.x += 0.079;
-          posx += 0.1;
+          direita = true;
+
+          //sprite.position.x += 0.1;
+          //camera.position.x += 0.1;
+          //sprite2.position.x += 0.079;
+          //posx += 0.1;
+          
           flagR = true;
 
           if (flagL === true) {
-            aux = sprite.position.y;
+            auxx = sprite.position.x;
+            auxy = sprite.position.y;
             scene.remove(sprite);
             personagemTextura = new THREE.ImageUtils.loadTexture('img/running/running1.png');
             animation = new TileTextureAnimator(personagemTextura, 3, 1, 300);
@@ -232,7 +252,7 @@
               color: 0xffffff
             });
             sprite = new THREE.Sprite(personagemSprite);
-            sprite.position.set(posx, aux, 4);
+            sprite.position.set(auxx, auxy, 4);
             sprite.scale.set(2, 4, 1);
             scene.add(sprite);
             personagemPrincipalSprite= sprite;
@@ -271,6 +291,8 @@
     sprite2.scale.set(20, 10, 1); // imageWidth, imageHeight
     scene.add(sprite2);
 
+    cenarioBackground = sprite2;
+
   }
 
   function animate() {
@@ -294,12 +316,21 @@
     animation.update(1000 * delta);
     velocity.y -= 5 * delta;
 
-    console.log(personagemPrincipalSprite.position.y);
+    if(esquerda){
+      personagemPrincipalSprite.translateX(-0.1);
+      cenarioBackground.translateX(-0.087);
+      camera.translateX(-0.1);
+    }
+    if(direita){
+      personagemPrincipalSprite.translateX(+0.1);
+      cenarioBackground.translateX(+0.087);
+      camera.translateX(+0.1);
+    }
+
     if( personagemPrincipalSprite.position.y <= 1.6 ){
       velocity.y = Math.max(0,velocity.y);
       isJump = true;  
     }
-
     personagemPrincipalSprite.translateY(velocity.y * delta);
   }
 
