@@ -484,6 +484,7 @@
     for (i = 0; i < rays.length; i += 1) {
       // We reset the raycaster to this direction
       caster.set(personagemPrincipalSprite.position, rays[i]);
+      caster2.set(personagemPrincipalSprite.position, rays[i]);
       // Test if we intersect with any obstacle mesh
       colisoesObjetos = caster.intersectObjects(obstaculosObjetos);
       colisoesMonstros = caster2.intersectObjects(obstaculosMonstros);
@@ -492,6 +493,7 @@
         if (i != 4) {
           console.log("deveria te rmorrido");
         } else {
+          console.log("morreu");
           //matou monstro
         }
       }
