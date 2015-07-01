@@ -491,10 +491,11 @@
 
       if (colisoesMonstros.length > 0 && colisoesMonstros[0].distance <= distance) {
         if (i != 4) {
-          console.log("deveria te rmorrido");
+          console.log("deveria te morrido");
         } else {
           console.log("morreu");
-          //matou monstro
+          //matou monstroso;
+          deleteObject(monstros[0].position.x, monstros[0].position.y, monstros[0].position.z);
         }
       }
       if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance) {
@@ -635,6 +636,9 @@
     for (var i = 0; i < objetos.length; i++) {
       if (x === objetos[i].position.x && y === objetos[i].position.y && z === objetos[i].position.z) {
         scene.remove(objetos[i]);
+        objetos[i].position.x = -1;
+        objetos[i].position.y = -1;
+        objetos[i].position.z = -1;
       }
     };
   }
