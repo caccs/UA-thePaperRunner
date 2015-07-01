@@ -11,6 +11,7 @@
   var cenarioBackground;
 
   var monstros = [];
+  var nuvens = [];
   var objetos = [];
 
   var velocity = {
@@ -70,12 +71,37 @@
     adicionarSprites(-34,3.5,-3,6,8,1,'img/arvere/1.png');
     adicionarSprites(-38,3.6,-3,6,8,1,'img/arvere/2.png');
     adicionarSprites(16,3.2,0,6,8,1,'img/arvere/2.png');    
+
+    adicionarSprites(20,3.2,0,6,8,1,'img/arvere/2.png');
+    adicionarSprites(16,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(24,3.2,-2,6,8,1,'img/arvere/2.png');
+    adicionarSprites(28,3.2,0,6,8,1,'img/arvere/1.png');
+    adicionarSprites(30,3.2,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(48,3.2,0,6,8,1,'img/arvere/1.png');
+    adicionarSprites(45,3.2,2,6,8,1,'img/arvere/2.png');
+    adicionarSprites(36,3.2,3,6,8,1,'img/arvere/2.png');
+    adicionarSprites(31,3.2,-1,6,8,1,'img/arvere/2.png');
+    adicionarSprites(33,3.2,0,6,8,1,'img/arvere/2.png');
+    adicionarSprites(33,3.2,1,6,8,1,'img/arvere/2.png');
+    adicionarSprites(40,3.2,0,6,8,1,'img/arvere/2.png');
+
+
     adicionarSprites(10,5,-22,20,20,1,'img/montanha2.png');
     adicionarSprites(-7,5,-19,23,20,1,'img/montanha1.png');
     adicionarSprites(-20,5,-24,30,20,1,'img/montanha2.png');
     adicionarSprites(-29,5,-18,35,20,1,'img/montanha1.png');
     adicionarSprites(-40,5,-29,30,20,1,'img/montanha1.png');
     adicionarSprites(-60,5,-20,28,20,1,'img/montanha2.png');
+
+    adicionarSprites(15,5,-22,20,20,1,'img/montanha2.png');
+    adicionarSprites(20,5,-19,23,20,1,'img/montanha1.png');
+    adicionarSprites(31,5,-24,30,20,1,'img/montanha2.png');
+    adicionarSprites(45,5,-18,35,20,1,'img/montanha1.png');
+    adicionarSprites(13,5,-10,20,20,1,'img/montanha1.png');
+
+    adicionarNuvens();
+    adicionarNuvens();    adicionarNuvens();    adicionarNuvens();
+    adicionarNuvens();
   }
 
   function addVTK(arquivo, x) {
@@ -116,6 +142,31 @@
     // adiciona no array do javascripts
     // os monstros
   }
+
+  function adicionarNuvens() {
+    // adicionando o fundo (de papel)
+    var background;
+    var hue = Math.floor(Math.random() *2);
+    switch(hue){
+      case 0:
+        background = new THREE.ImageUtils.loadTexture('img/nuvens/nuvem1.png');
+        break;
+      case 1:
+        background = new THREE.ImageUtils.loadTexture('img/nuvens/nuvem2.png');
+        break; 
+    };
+    
+    var crateMaterial = new THREE.SpriteMaterial({
+      map: background,
+      useScreenCoordinates: false,
+      color: 0xffffff
+    });
+    var sprite2 = new THREE.Sprite(crateMaterial);
+    sprite2.position.set((Math.random()*40)-20, 9, 0);
+    sprite2.scale.set(12,3,1); // imageWidth, imageHeight
+    scene.add(sprite2);
+    nuvens.push(sprite2);
+  }  
   function addCubo(x, y, z) {
     var geometry = new THREE.CubeGeometry(5, 5, 1);
     var material = new THREE.MeshBasicMaterial({
@@ -134,6 +185,7 @@
     // cria o canvas para exibir a cena renderizada
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMapEnabled = true;
 
     // define posição da camera (x,y,z) e aonde ela est apontando
     camera.position.set(1, 2, 20);
@@ -311,6 +363,13 @@
     }
 
     addPersonagem();
+  // SKYBOX/FOG
+  var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );
+  var skyBoxMaterial = new THREE.MeshBasicMaterial({
+      map: new THREE.ImageUtils.loadTexture('img/chao.png'), side: THREE.BackSide
+    });
+  var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+  scene.add(skyBox);
 
     // adicionando o chão
     var floorTexture = new THREE.ImageUtils.loadTexture('img/chao.png');
@@ -346,6 +405,7 @@
     requestAnimationFrame(animate);
     //autlaizar movimentos do monstros
     atualizarMonstros();
+    atualizarNuvens();
     render();
     update();
   }
@@ -354,6 +414,17 @@
     if (monstros.length > 0) {
       monstros.forEach(function(monstro) {
         monstro.position.x -= 0.01;
+      });
+    }
+  }
+
+  function atualizarNuvens() {
+    if (nuvens.length > 0) {
+      nuvens.forEach(function(nuvem) {
+        if(nuvem.position.x < -30)
+          nuvem.position.x = 50;
+        else
+          nuvem.position.x-=0.008;
       });
     }
   }
@@ -372,7 +443,7 @@
 
     }
     if(direita){
-      if(personagemPrincipalSprite.position.x < 30){
+      if(personagemPrincipalSprite.position.x < 25){
         personagemPrincipalSprite.translateX(+0.1);
         // cenarioBackground.translateX(+0.087);
         camera.translateX(+0.1);
