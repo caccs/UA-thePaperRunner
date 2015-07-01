@@ -11,6 +11,7 @@
   var cenarioBackground;
 
   var monstros = [];
+  var objetos = [];
 
   var velocity = {
     x: 0,
@@ -48,6 +49,7 @@
       var mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(x, 1, 0);
       scene.add(mesh);
+      objetos.push(mesh);
     });
   }
 
@@ -66,6 +68,7 @@
       mesh.scale.set(5, 5, 5);
       scene.add(mesh);
       monstros.push(mesh);
+      objetos.push(mesh);
     });
 
     // adiciona no array do javascripts
@@ -79,6 +82,7 @@
     var cube = new THREE.Mesh(geometry, material);
     cube.position.set(x, y, z);
     scene.add(cube);
+    objetos.push(cube);
   }
 
   function init() {
@@ -384,4 +388,12 @@
     // update the mouse variable
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  }
+
+  function deleteObject(position){
+    for (var i = 0; i < objetos.length; i++) {
+      if(position === objetos[i].position.y){
+        scene.remove(objetos[i]);
+      }
+    };
   }
