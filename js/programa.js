@@ -6,6 +6,7 @@
   // variaveis do personagem
   var personagemPrincipalSprite;
   var esquerda, direita;
+  var personagemMorto;
 
   var colisaoDireita, colisaoEsquerda;
 
@@ -66,6 +67,7 @@
     sprite2.position.set(x, y, z);
     sprite2.scale.set(x1, x2, x3); // imageWidth, imageHeight
     scene.add(sprite2);
+    return sprite2;
   }
 
   function criarCenario() {
@@ -122,6 +124,11 @@
     adicionarNuvens();
     adicionarNuvens();
     adicionarNuvens();
+
+    addCubo(-13.5, 2, 4);
+    addCubo(-13.5, 7, 4);
+    addCubo(28.5, 2, 4);
+    addCubo(28.5, 7, 4);
   }
 
   function addVTK(arquivo, x) {
@@ -152,8 +159,8 @@
       geometry.computeVertexNormals();
 
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(x, 1, 4);
-      mesh.scale.set(5, 5, 5);
+      mesh.position.set(x, 0, 4);
+      mesh.scale.set(10, 10, 5);
       scene.add(mesh);
       monstros.push(mesh);
       objetos.push(mesh);
@@ -290,6 +297,8 @@
       //   personagemPrincipalSprite = sprite;
       // });
       document.addEventListener('keyup', function(evt) {
+        if (personagemMorto)
+          return;
         //colisao();
         if (evt.keyCode === 65 || evt.keyCode === 68) {
           auxx = sprite.position.x;
@@ -319,6 +328,8 @@
         }
       });
       document.addEventListener('keydown', function(evt) {
+        if (personagemMorto)
+          return;
         // pulo
         if (evt.keyCode === 87) {
           if (isJump) {
@@ -430,7 +441,6 @@
         scene.add(sprite2);
 
         cenarioBackground = sprite2;*/
-
   }
 
   function animate() {
@@ -468,7 +478,9 @@
 
   function colisao() {
     'use strict';
-    var colisoesObjetos, colisoesMonstros, i,
+    if (personagemMorto)
+      return;
+    var colisoesObjetos, colisoesMonstros, i, i2,
       // Maximum distance from the origin before we consider collision
       distance = 1.6,
       // Get the obstaculosObjetos array from our world
@@ -489,18 +501,32 @@
       colisoesObjetos = caster.intersectObjects(obstaculosObjetos);
       colisoesMonstros = caster2.intersectObjects(obstaculosMonstros);
 
-      if (colisoesMonstros.length > 0 && colisoesMonstros[0].distance <= distance) {
-        if (i != 4) {
-          console.log("deveria te morrido");
-        } else {
-          console.log("morreu");
-          //matou monstroso;
-          deleteObject(monstros[0].position.x, monstros[0].position.y, monstros[0].position.z);
+      if (colisoesMonstros.length > 0) {
+        for (i2 = 0; i2 < colisoesMonstros.length; i2++) {
+          if (colisoesMonstros[i2].distance <= distance) {
+            if (i != 4) {
+              var auxx, auxy;
+              auxx = personagemPrincipalSprite.position.x;
+              auxy = personagemPrincipalSprite.position.y;
+              scene.remove(personagemPrincipalSprite);
+              personagemPrincipalSprite = adicionarSprites(auxx, auxy - 1.4, 4, 3, 1.6, 1, "img/stand/1.png");
+              personagemMorto = true;
+              direita = false;
+              esquerda = false;
+              console.log("morrriiii");
+            } else {
+              console.log("monstro morreu");
+              deleteObject(monstros[i2].position.x, monstros[i2].position.y, monstros[i2].position.z);
+              monstros.shift();
+              vetorMonstros.shift();
+              velocity.y+=5; 
+            }
+          }
         }
       }
+
       if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance) {
         if (i >= 1 && i <= 3) {
-          console.log("detectei colisoa esquerda");
           colisaoDireita = true;
           //colisao pela ESQUERDA da caixa
         } else if (i >= 5 && i <= 7) {
@@ -632,13 +658,13 @@
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
-  function deleteObject(x, y, z){
+  function deleteObject(x, y, z) {
     for (var i = 0; i < objetos.length; i++) {
       if (x === objetos[i].position.x && y === objetos[i].position.y && z === objetos[i].position.z) {
         scene.remove(objetos[i]);
-        objetos[i].position.x = -1;
-        objetos[i].position.y = -1;
-        objetos[i].position.z = -1;
+        objetos[i].position.x = -1000;
+        objetos[i].position.y = -1000;
+        objetos[i].position.z = -1000;
       }
     };
   }
