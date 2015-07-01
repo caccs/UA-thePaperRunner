@@ -512,6 +512,7 @@
       }
       // And disable that direction if we do
       else if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance ) {
+>>>>>>> 5ed1a9eaf5b60ebd84f199fe39b8ddc4afea6b80
         //alert("colidiu");
         //deleteObject(2);
         /*if (i >= 1 && i <= 3) {
@@ -532,11 +533,13 @@
           this.direction.setX(0);
         } else if ((i === 5 || i === 6 || i === 7) && this.direction.x === -1) {
           this.direction.setX(0);
+<<<<<<< HEAD
+=======
         }
+>>>>>>> 5ed1a9eaf5b60ebd84f199fe39b8ddc4afea6b80
         }*/
       }
     }
-  }
 
   function update() {
     var delta = clock.getDelta();
@@ -622,11 +625,7 @@
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
-<<<<<<< HEAD
-  function deleteObject(position) {
-=======
   /*function deleteObject(position){
->>>>>>> 5ed1a9eaf5b60ebd84f199fe39b8ddc4afea6b80
     for (var i = 0; i < objetos.length; i++) {
       if (position === objetos[i].position.y) {
         scene.remove(objetos[i]);
