@@ -35,6 +35,48 @@
   // loop de animação
   animate();
 
+  function adicionarSprites(x,y,z,x1,x2,x3,img){
+    // adicionando o fundo (de papel)
+    var background = new THREE.ImageUtils.loadTexture(img);
+    var crateMaterial = new THREE.SpriteMaterial({
+      map: background,
+      useScreenCoordinates: false,
+      color: 0xffffff
+    });
+    var sprite2 = new THREE.Sprite(crateMaterial);
+    sprite2.position.set(x, y, z);
+    sprite2.scale.set(x1,x2,x3); // imageWidth, imageHeight
+    scene.add(sprite2);
+  }
+  function criarCenario(){
+
+    adicionarSprites(-4,0.9,2,3,3,1,'img/runforest.png');
+    adicionarSprites(0,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(3,3.2,0,6,8,1,'img/arvere/2.png');
+    adicionarSprites(6,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(9,3.2,0,6,8,1,'img/arvere/2.png');
+    adicionarSprites(-2,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-9,3.5,-2,6,8,1,'img/arvere/2.png');
+    adicionarSprites(-13,3.5,-1,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-15,3.5,0,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-6,3.5,-4,6,8,1,'img/arvere/2.png');
+    adicionarSprites(-19,3.4,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(30,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(19,3.4,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(24,3.4,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-19,3.4,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-23,3.2,-3,6,8,1,'img/arvere/2.png');
+    adicionarSprites(-34,3.5,-3,6,8,1,'img/arvere/1.png');
+    adicionarSprites(-38,3.6,-3,6,8,1,'img/arvere/2.png');
+    adicionarSprites(16,3.2,0,6,8,1,'img/arvere/2.png');    
+    adicionarSprites(10,5,-22,20,20,1,'img/montanha2.png');
+    adicionarSprites(-7,5,-19,23,20,1,'img/montanha1.png');
+    adicionarSprites(-20,5,-24,30,20,1,'img/montanha2.png');
+    adicionarSprites(-29,5,-18,35,20,1,'img/montanha1.png');
+    adicionarSprites(-40,5,-29,30,20,1,'img/montanha1.png');
+    adicionarSprites(-60,5,-20,28,20,1,'img/montanha2.png');
+  }
+
   function addVTK(arquivo, x) {
     var material = new THREE.MeshLambertMaterial({
       color: 0xffffff,
@@ -95,6 +137,7 @@
     document.body.appendChild(renderer.domElement);
 
     addCubo(5, 2, 4);
+    criarCenario();
 
     function addGrama(){
       grama = new THREE.ImageUtils.loadTexture('img/grama.png');
@@ -273,13 +316,13 @@
       map: floorTexture,
       side: THREE.DoubleSide
     });
-    var floorGeometry = new THREE.PlaneGeometry(100,50, 1, 1);
+    var floorGeometry = new THREE.PlaneGeometry(200,50, 1, 1);
     var floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.position.y = -0.5;
     floor.rotation.x = Math.PI / 2;
     scene.add(floor);
 
-    // adicionando o fundo (de papel)
+/*    // adicionando o fundo (de papel)
     var background = new THREE.ImageUtils.loadTexture('img/background/background.bmp');
     var crateMaterial = new THREE.SpriteMaterial({
       map: background,
@@ -291,7 +334,7 @@
     sprite2.scale.set(20, 10, 1); // imageWidth, imageHeight
     scene.add(sprite2);
 
-    cenarioBackground = sprite2;
+    cenarioBackground = sprite2;*/
 
   }
 
@@ -317,14 +360,19 @@
     velocity.y -= 5 * delta;
 
     if(esquerda){
-      personagemPrincipalSprite.translateX(-0.1);
-      cenarioBackground.translateX(-0.087);
-      camera.translateX(-0.1);
+      if(personagemPrincipalSprite.position.x > -10){
+        personagemPrincipalSprite.translateX(-0.1);
+        // cenarioBackground.translateX(-0.087);
+        camera.translateX(-0.1);
+      }
+
     }
     if(direita){
-      personagemPrincipalSprite.translateX(+0.1);
-      cenarioBackground.translateX(+0.087);
-      camera.translateX(+0.1);
+      if(personagemPrincipalSprite.position.x < 30){
+        personagemPrincipalSprite.translateX(+0.1);
+        // cenarioBackground.translateX(+0.087);
+        camera.translateX(+0.1);
+      }      
     }
 
     if( personagemPrincipalSprite.position.y <= 1.6 ){
