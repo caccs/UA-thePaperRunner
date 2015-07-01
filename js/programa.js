@@ -13,7 +13,8 @@
   var monstros = [];
   var nuvens = [];
   var objetos = [];
-  var objetosColisao = [];
+  var vetorObjetos = [];
+  var vetorMonstros = [];
 
   var colidiu = 0;
 
@@ -150,6 +151,7 @@
       scene.add(mesh);
       monstros.push(mesh);
       objetos.push(mesh);
+      vetorMonstros.push(mesh);
     });
 
     // adiciona no array do javascripts
@@ -190,7 +192,7 @@
     cube.position.set(x, y, z);
     scene.add(cube);
     objetos.push(cube);
-    objetosColisao.push(cube);
+    vetorObjetos.push(cube);
   }
 
   function init() {
@@ -453,26 +455,52 @@
 
   function colisao() {
     'use strict';
-    var collisions, i,
+    var colisoesObjetos, colisoesMonstros, i,
       // Maximum distance from the origin before we consider collision
-      distance = 1,
-      // Get the obstacles array from our world
-      obstacles = objetosColisao;
+      distance = 1.6,
+      // Get the obstaculosObjetos array from our world
+      obstaculosObjetos = vetorObjetos,
+      obstaculosMonstros = vetorMonstros;
 
     var caster = new THREE.Raycaster();
+    var caster2 = new THREE.Raycaster();
     //colidiu = 0;
     // For each ray
     for (i = 0; i < rays.length; i += 1) {
       // We reset the raycaster to this direction
       caster.set(personagemPrincipalSprite.position, rays[i]);
       // Test if we intersect with any obstacle mesh
-      collisions = caster.intersectObjects(obstacles);
+      colisoesObjetos = caster.intersectObjects(obstaculosObjetos);
+      colisoesMonstros = caster2.intersectObjects(obstaculosMonstros);
 
-      if (collisions.length > 0 && i === 4){
+      if (colisoesMonstros.length > 0 && colisoesMonstros[0].distance <= distance) {
+        if (i != 4) {
+          //morreu
+        }
+        else {
+          //matou monstro
+        }
+      }
+
+      if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance) {
+        if (i >= 1 && i <= 3) {
+          //colisao pela DIREITA da caixa
+        }
+        else if (i >= 5 && i <= 7) {
+          //colisao pela ESQUERDA da caixa
+        }
+        else if (i == 4) {
+          //em cima da caixa
+          personagemPrincipalSprite.position.y = 6;
+          velocity.y = 0;
+        }
+      }
+
+      /*if (colisoesObjetos.length > 0 && i === 4){
         personagemPrincipalSprite.position.y = 6.5;
       }
       // And disable that direction if we do
-      else if (collisions.length > 0 && collisions[0].distance <= distance ) {
+      else if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance ) {
         //alert("colidiu");
         //deleteObject(2);
         /*if (i >= 1 && i <= 3) {
@@ -493,8 +521,8 @@
           this.direction.setX(0);
         } else if ((i === 5 || i === 6 || i === 7) && this.direction.x === -1) {
           this.direction.setX(0);
-        }*/
         }
+        }*/
       }
     }
 
@@ -580,10 +608,10 @@
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
-  function deleteObject(position){
+  /*function deleteObject(position){
     for (var i = 0; i < objetos.length; i++) {
       if(position === objetos[i].position.y){
         scene.remove(objetos[i]);
       }
     };
-  }
+  }*/
