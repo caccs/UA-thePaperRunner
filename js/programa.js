@@ -7,6 +7,8 @@
   var personagemPrincipalSprite;
   var esquerda, direita;
 
+  var colisaoDireita, colisaoEsquerda;
+
 
   var cenarioBackground;
 
@@ -150,7 +152,7 @@
       geometry.computeVertexNormals();
 
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(x, 1, 0);
+      mesh.position.set(x, 1, 4);
       mesh.scale.set(5, 5, 5);
       scene.add(mesh);
       monstros.push(mesh);
@@ -477,6 +479,8 @@
     var caster2 = new THREE.Raycaster();
     //colidiu = 0;
     // For each ray
+    colisaoDireita = false;
+    colisaoEsquerda = false;
     for (i = 0; i < rays.length; i += 1) {
       // We reset the raycaster to this direction
       caster.set(personagemPrincipalSprite.position, rays[i]);
@@ -486,24 +490,24 @@
 
       if (colisoesMonstros.length > 0 && colisoesMonstros[0].distance <= distance) {
         if (i != 4) {
-          //morreu
-        }
-        else {
+          console.log("deveria te rmorrido");
+        } else {
           //matou monstro
         }
       }
-
       if (colisoesObjetos.length > 0 && colisoesObjetos[0].distance <= distance) {
         if (i >= 1 && i <= 3) {
-          //colisao pela DIREITA da caixa
-        }
-        else if (i >= 5 && i <= 7) {
+          console.log("detectei colisoa esquerda");
+          colisaoDireita = true;
           //colisao pela ESQUERDA da caixa
-        }
-        else if (i == 4) {
+        } else if (i >= 5 && i <= 7) {
+          //colisao pela DIREITA da caixa
+          colisaoEsquerda = true;
+        } else if (i == 4) {
           //em cima da caixa
           personagemPrincipalSprite.position.y = 6;
           velocity.y = 0;
+          isJump = true;
         }
       }
 
@@ -523,8 +527,8 @@
           personagemPrincipalSprite.position.setX(9);
           colidiu = 1;
         }*/
-        // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
-        /*if ((i === 0 || i === 1 || i === 7) && this.direction.z === 1) {
+      // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+      /*if ((i === 0 || i === 1 || i === 7) && this.direction.z === 1) {
           this.direction.setZ(0);
         } else if ((i === 3 || i === 4 || i === 5) && this.direction.z === -1) {
           this.direction.setZ(0);
@@ -538,15 +542,15 @@
         }
 >>>>>>> 5ed1a9eaf5b60ebd84f199fe39b8ddc4afea6b80
         }*/
-      }
     }
+  }
 
   function update() {
     var delta = clock.getDelta();
     animation.update(1000 * delta);
     velocity.y -= 5 * delta;
 
-    if (esquerda) {
+    if (esquerda && !colisaoEsquerda) {
       if (personagemPrincipalSprite.position.x > -10) {
         personagemPrincipalSprite.translateX(-0.1);
         // cenarioBackground.translateX(-0.087);
@@ -556,7 +560,7 @@
       }
 
     }
-    if (direita) {
+    if (direita && !colisaoDireita) {
       if (personagemPrincipalSprite.position.x < 25) {
         personagemPrincipalSprite.translateX(+0.1);
         // cenarioBackground.translateX(+0.087);
