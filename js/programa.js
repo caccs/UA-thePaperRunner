@@ -3,6 +3,8 @@
   var animation;
   var clock = new THREE.Clock();
 
+  var pontuacao = 0;
+
   // variaveis do personagem
   var personagemPrincipalSprite;
   var esquerda, direita;
@@ -12,6 +14,10 @@
 
 
   var cenarioBackground;
+
+  var funcaoTimer = setInterval(function() {
+    adicionarMonstro("models/bunny.vtk", Math.floor(Math.random() * 25) - 10)
+  }, 3000);
 
   var monstros = [];
   var nuvens = [];
@@ -438,9 +444,11 @@
         var sprite2 = new THREE.Sprite(crateMaterial);
         sprite2.position.set(0, 3, 0);
         sprite2.scale.set(20, 10, 1); // imageWidth, imageHeight
-        scene.add(sprite2);
+        scene.addkjj(sprite2);
 
         cenarioBackground = sprite2;*/
+
+
   }
 
   function animate() {
@@ -513,13 +521,15 @@
               personagemMorto = true;
               direita = false;
               esquerda = false;
-              console.log("morrriiii");
+              clearInterval(funcaoTimer);
+              alert("PONTUAÇÃO: "+pontuacao);
             } else {
-              console.log("monstro morreu");
               deleteObject(monstros[i2].position.x, monstros[i2].position.y, monstros[i2].position.z);
               monstros.shift();
               vetorMonstros.shift();
-              velocity.y+=5; 
+              velocity.y = 0;
+              velocity.y += 5;
+              pontuacao+=10;
             }
           }
         }
