@@ -629,10 +629,10 @@
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
-  /*function deleteObject(position){
+  function deleteObject(x, y, z){
     for (var i = 0; i < objetos.length; i++) {
-      if (position === objetos[i].position.y) {
+      if (x === objetos[i].position.x && y === objetos[i].position.y && z === objetos[i].position.z) {
         scene.remove(objetos[i]);
       }
     };
-  }*/
+  }
