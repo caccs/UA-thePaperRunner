@@ -13,6 +13,18 @@
   var monstros = [];
   var nuvens = [];
   var objetos = [];
+  var objetosColisao = [];
+
+  var colidiu = 0;
+
+  var rays = [  new THREE.Vector3( 0, 1,  0),
+                new THREE.Vector3( 1, 1,  0),
+                new THREE.Vector3( 1, 0,  0),
+                new THREE.Vector3( 1, -1, 0),
+                new THREE.Vector3( 0, -1, 0),
+                new THREE.Vector3(-1, -1, 0),
+                new THREE.Vector3(-1, 0,  0),
+                new THREE.Vector3(-1, 1,  0)  ];
 
   var velocity = {
     x: 0,
@@ -50,6 +62,7 @@
     sprite2.scale.set(x1,x2,x3); // imageWidth, imageHeight
     scene.add(sprite2);
   }
+
   function criarCenario(){
 
     adicionarSprites(-4,0.9,2,3,3,1,'img/runforest.png');
@@ -167,6 +180,7 @@
     scene.add(sprite2);
     nuvens.push(sprite2);
   }  
+
   function addCubo(x, y, z) {
     var geometry = new THREE.CubeGeometry(5, 5, 1);
     var material = new THREE.MeshBasicMaterial({
@@ -176,6 +190,7 @@
     cube.position.set(x, y, z);
     scene.add(cube);
     objetos.push(cube);
+    objetosColisao.push(cube);
   }
 
   function init() {
@@ -192,7 +207,10 @@
     // objetosjga o renderer (canvas) no html
     document.body.appendChild(renderer.domElement);
 
+    addCubo(15, 2, 0);
     addCubo(5, 2, 4);
+
+
     criarCenario();
 
     function addGrama(){
@@ -209,6 +227,8 @@
       scene.add(sprite);
 
     }
+
+    
 
     // adicionando o personagem
     function addPersonagem() {
@@ -260,6 +280,7 @@
       //   personagemPrincipalSprite = sprite;
       // });
       document.addEventListener('keyup', function(evt) {
+        //colisao();
         if (evt.keyCode === 65 || evt.keyCode === 68) {
           auxx = sprite.position.x;
           auxy = sprite.position.y;
@@ -408,6 +429,7 @@
     atualizarNuvens();
     render();
     update();
+    colisao();
   }
 
   function atualizarMonstros() {
@@ -429,6 +451,53 @@
     }
   }
 
+  function colisao() {
+    'use strict';
+    var collisions, i,
+      // Maximum distance from the origin before we consider collision
+      distance = 1,
+      // Get the obstacles array from our world
+      obstacles = objetosColisao;
+
+    var caster = new THREE.Raycaster();
+    //colidiu = 0;
+    // For each ray
+    for (i = 0; i < rays.length; i += 1) {
+      // We reset the raycaster to this direction
+      caster.set(personagemPrincipalSprite.position, rays[i]);
+      // Test if we intersect with any obstacle mesh
+      collisions = caster.intersectObjects(obstacles);
+
+      if (collisions.length > 0 && i === 4){
+        personagemPrincipalSprite.position.y = 6.5;
+      }
+      // And disable that direction if we do
+      else if (collisions.length > 0 && collisions[0].distance <= distance ) {
+        //alert("colidiu");
+        //deleteObject(2);
+        /*if (i >= 1 && i <= 3) {
+          personagemPrincipalSprite.position.setX(1);
+          colidiu = 1;
+        }
+        else if (i >= 5 && i <= 7) {
+          personagemPrincipalSprite.position.setX(9);
+          colidiu = 1;
+        }*/
+        // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
+        /*if ((i === 0 || i === 1 || i === 7) && this.direction.z === 1) {
+          this.direction.setZ(0);
+        } else if ((i === 3 || i === 4 || i === 5) && this.direction.z === -1) {
+          this.direction.setZ(0);
+        }
+        if ((i === 1 || i === 2 || i === 3) && this.direction.x === 1) {
+          this.direction.setX(0);
+        } else if ((i === 5 || i === 6 || i === 7) && this.direction.x === -1) {
+          this.direction.setX(0);
+        }*/
+        }
+      }
+    }
+
   function update() {
     var delta = clock.getDelta();
     animation.update(1000 * delta);
@@ -438,7 +507,8 @@
       if(personagemPrincipalSprite.position.x > -10){
         personagemPrincipalSprite.translateX(-0.1);
         // cenarioBackground.translateX(-0.087);
-        camera.translateX(-0.1);
+        /*if (!colidiu)*/ camera.translateX(-0.1);
+        //else colidiu = 0;
       }
 
     }
@@ -446,11 +516,12 @@
       if(personagemPrincipalSprite.position.x < 25){
         personagemPrincipalSprite.translateX(+0.1);
         // cenarioBackground.translateX(+0.087);
-        camera.translateX(+0.1);
+        /*if (!colidiu)*/ camera.translateX(+0.1);
+
       }      
     }
 
-    if( personagemPrincipalSprite.position.y <= 1.6 ){
+    if( personagemPrincipalSprite.position.y <= 1.6){
       velocity.y = Math.max(0,velocity.y);
       isJump = true;  
     }
