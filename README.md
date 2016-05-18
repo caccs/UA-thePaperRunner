@@ -1,36 +1,23 @@
-###Trabalho - Computação Gráfica
+###Universidade Aberta - The Papper Runner
 ---
 
-Integrantes: 
+Este jogo será utilizado na Universidade Aberta para apresentar para os alunos do Ensino Médio e Pré-vestibular, o curso de Ciência da Computação. Será mostrado a parte de renderização, gameplay e mecanismos para gerar a animação (no caso apresentando a programação feita e também as bibliotecas utilizadas). E a parte mais daora, deixar o pessoal jogar \o/
+
+Modificado apartir de um trabalho de graduação do ano de 2015/1 na matéria Computação Gráfica.
+
+Integrantes Originais: 
 - [@eiguike](https://github.com/eiguike)
 - [@marcelloacar](https://github.com/marcelloacar)
 - [@rfzanetti](https://github.com/rfzanetti)
 - [@streeck](https://github.com/streeck)
 
----
+**Objetivo do Jogo**:
+  - Matar o máximo número de coelhos;
+  - Permanecer vivo e não ser amassado!
 
-**Tema**: Jogo ou animação interativa
+**Comandos**:
+  - **A** : anda para a esquerda;
+  - **W** : pula;
+  - **D** : anda para a direita.
 
-**Entregar**: código fonte, relatório (PDF) com breve descrição do desenvolvimento do projeto (incluindo divisão de tarefas, dificuldades, bibliotecas utilizadas, ...), vídeo de uma execução narrada.
-
-**Avaliação**: 60% atendimento às especificações, 20% relatório, 10% vídeo e 10% criatividade/qualidade visual.
-
-**Ferramentas**: OpenGL e GLSL (obrigatórios), livre para usar qualquer biblioteca auxiliar, linguagens: C/C++/Java/JavaScript/HTML5, IDE: apenas livres (não utilizar bibliotecas/ide/compiladores disponíveis apenas no windows)
-
----
-
-#####Parte 1: Definição do trabalho e dos objetos (submeter com antecedência PDF descrevendo a proposta e aguardar aprovação)
-
-Definição da proposta:
-- Objetos que serão utilizados (pelo menos 4 modelos)
-- Animações pretendidas (pelo menos 3 movimentos)
-- Interações pretendidas (teclado e mouse)
-- Utilizar pelo menos um modelos de cada representado por superfícies curvas.
-
-#####Parte 2: Implementação
-Incluir efeitos:
-- Realísticos (luz e textura, por exemplo) ;
-- Interação entre objetos (colisão);
-- Interação com o usuário.
-
----
+  
